@@ -5,26 +5,171 @@ date: "05/07/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(readMLData)
+library(Matrix.utils)
+library(sf)
+library(MASS)
+library(readr)
+library(ggplot2)
+library(rgdal)
+library(maps)
+library(dplyr)
+library(tidyr)
+library(fastmap)
+library(maptools)
+library(ggmap)
+library(tmap)
+library(tmaptools)
+library(readr)
+library(readxl)
+library(readxl)
+library(readtext)
+library(dplyr)
+library(magrittr)
+library("plotrix")
+library(afex)
+library(ggplot2)
+library(plotrix)
+library(nortest)
+library(readtext)
+library(splitstackshape) ## Text to columns function in r
+library(data.table)
+library(lubridate)
+library(gridExtra)
+library(hms)
+library("scales")
+library("chron")
+library("xts")
+library ("oce")
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Code for WCVS Station_9_701 m
+```{r}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Station 9
 
-```{r cars}
-summary(cars)
+CTD_Data_WCVS19_Station_9_701m <- read.table(file.choose(), header = TRUE, sep = "\t")  ## Importing station data as 
+
+#DataFrame (DF)-Tab format
+
+CTD_Data_WCVS19_Station_9_701m$Station <- c("CTD_Data_WCVS19_Station_9_701m")
+
+## Round data and Create depthbin column
+
+CTD_Data_WCVS19_Station_9_701m <- mutate(CTD_Data_WCVS19_Station_9_701m, depth_Bin = round(depth, 0))  
+
+# Convert time to a POSIXct timestamp- Note that the date in this column represents the date the column was generated
+
+CTD_Data_WCVS19_Station_9_701m$datetime <- as.POSIXct(paste(CTD_Data_WCVS19_Station_9_701m$time),       
+                                                     format = "%H:%M:%S")
+
+attach(CTD_Data_WCVS19_Station_9_701m)
+View(CTD_Data_WCVS19_Station_9_701m)
+
+## Plot temp, conductivity, salinity and oxygen
+
+
+WCVS19_9_Temp  <- ggplot(CTD_Data_WCVS19_Station_9_701m, aes(x = datetime, y=ctd_temp)) + geom_path()
+WCVS19_9_Sal  <- ggplot(CTD_Data_WCVS19_Station_9_701m, aes(x = datetime, y=salinity)) + geom_path()
+      
+
 ```
 
-## Including Plots
+## Code for WCVS Station 14_155m
 
-You can also embed plots, for example:
+```{r}
+## Station 14
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+CTD_Data_WCVS19_Station_14_155m <- read.table(file.choose(), header = TRUE, sep = "\t")  ## Importing station data as 
+
+#DataFrame (DF)-Tab format
+
+CTD_Data_WCVS19_Station_14_155m$Station <- c("CTD_Data_WCVS19_Station_14_155m")
+
+## Round data and Create depthbin column
+
+CTD_Data_WCVS19_Station_14_155m <- mutate(CTD_Data_WCVS19_Station_14_155m, depth_Bin = round(depth, 0))  
+
+# Convert time to a POSIXct timestamp- Note that the date in this column represents the date the column was generated
+
+CTD_Data_WCVS19_Station_14_155m$datetime <- as.POSIXct(paste(CTD_Data_WCVS19_Station_14_155m$time),       
+                                                     format = "%H:%M:%S")
+
+attach(CTD_Data_WCVS19_Station_14_155m)
+View(CTD_Data_WCVS19_Station_14_155m)
+
+## Plot temp, conductivity, salinity and oxygen
+
+plot(datetime, ctd_temp, "l")                    
+plot(datetime,conductivity, "l")
+plot(datetime,salinity, "l")
+plot(datetime, O2oxygen, "l")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Code for WCVS Station 18_469m
+
+```{r}
+## Station 18
+
+CTD_Data_WCVS19_Station_18_469m <- read.table(file.choose(), header = TRUE, sep = "\t")  ## Importing station data as 
+
+#DataFrame (DF)-Tab format
+
+CTD_Data_WCVS19_Station_18_469m$Station <- c("CTD_Data_WCVS19_Station_18_469m")
+
+## Round data and Create depthbin column
+
+CTD_Data_WCVS19_Station_18_469m <- mutate(CTD_Data_WCVS19_Station_18_469m, depth_Bin = round(depth, 0))  
+
+# Convert time to a POSIXct timestamp- Note that the date in this column represents the date the column was generated
+
+CTD_Data_WCVS19_Station_18_469m$datetime <- as.POSIXct(paste(CTD_Data_WCVS19_Station_18_469m$time),       
+                                                     format = "%H:%M:%S")
+
+attach(CTD_Data_WCVS19_Station_18_469m)
+View(CTD_Data_WCVS19_Station_18_469m)
+
+## Plot temp, conductivity, salinity and oxygen
+
+WCVS19_CTDplotTemp <- ggplot(CTD_Data_WCVS19_Station_18_469m, aes(x = ctd_temp, y = depth, colour = V1)) + geom_path() +     
+  scale_y_reverse(name = "Depth (m)") + scale_x_continuous(name = "Temperature (°c)", position = "top") 
+
+plot(datetime, ctd_temp, "l")                    
+plot(datetime,conductivity, "l")
+plot(datetime,salinity, "l")
+plot(datetime, O2oxygen, "l")
+```
+
+## Code for WVCS Station 23_158m
+
+```{r}
+## Station 23
+
+CTD_Data_WCVS19_Station_23_158m <- read.table(file.choose(), header = TRUE, sep = "\t")  ## Importing station data as 
+
+#DataFrame (DF)-Tab format
+
+CTD_Data_WCVS19_Station_23_158m$Station <- c("CTD_Data_WCVS19_Station_23_158m")
+
+## Round data and Create depthbin column
+
+CTD_Data_WCVS19_Station_23_158m <- mutate(CTD_Data_WCVS19_Station_23_158m, depth_Bin = round(depth, 0))  
+
+# Convert time to a POSIXct timestamp- Note that the date in this column represents the date the column was generated
+
+CTD_Data_WCVS19_Station_23_158m$datetime <- as.POSIXct(paste(CTD_Data_WCVS19_Station_23_158m$time),       
+                                                     format = "%H:%M:%S")
+
+attach(CTD_Data_WCVS19_Station_23_158m)
+View(CTD_Data_WCVS19_Station_23_158m)
+
+## Plot temp, conductivity, salinity and oxygen
+
+plot(datetime, ctd_temp, "l")                    
+plot(datetime,conductivity, "l")
+plot(datetime,salinity, "l")
+plot(datetime, O2oxygen, "l")
+```
+
